@@ -28,7 +28,7 @@ class ZbarQrdecoderServiceProviderLaravel5 extends ServiceProvider {
         {
             $processBuilder = new ProcessBuilder();
             $config = $app['config']->get('zbar-qrdecoder');
-            
+
             return new ZbarDecoder($config, $processBuilder);
         });
 
