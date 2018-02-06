@@ -4,7 +4,8 @@ use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\Process\ProcessBuilder;
 
-class ZbarQrdecoderServiceProviderLaravel5 extends ServiceProvider {
+class ZbarQrdecoderServiceProviderLaravel5 extends ServiceProvider
+{
 
     /**
      * Bootstrap the application events.
@@ -13,7 +14,7 @@ class ZbarQrdecoderServiceProviderLaravel5 extends ServiceProvider {
      */
     public function boot()
     {
-      $this->publishes([__DIR__ . '/config/config.php' => config_path('zbar-qrdecoder.php')]);
+        $this->publishes([__DIR__ . '/config/config.php' => config_path('zbar-qrdecoder.php')]);
     }
 
     /**
@@ -23,15 +24,12 @@ class ZbarQrdecoderServiceProviderLaravel5 extends ServiceProvider {
      */
     public function register()
     {
-        $this->app->singleton('zbardecoder' ,function($app)
-       {
-           $processBuilder = new ProcessBuilder();
-           $config = $app['config']->get('zbar-qrdecoder');
+        $this->app->singleton('zbardecoder', function ($app) {
+            $config = $app['config']->get('zbar-qrdecoder');
+            return new ZbarDecoder($config);
+        });
 
-           return new ZbarDecoder($config, $processBuilder);
-       });
-       
-       $this->app->alias('ZbarDecoder', 'RobbieP\ZbarQrdecoder\Facades\ZbarDecoder');
+        $this->app->alias('ZbarDecoder', 'RobbieP\ZbarQrdecoder\Facades\ZbarDecoder');
     }
 
 }
