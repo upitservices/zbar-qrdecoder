@@ -7,7 +7,7 @@ use RobbieP\ZbarQrdecoder\Result\ErrorResult;
 use RobbieP\ZbarQrdecoder\Result\Parser\ParserXML;
 use RobbieP\ZbarQrdecoder\Result\ResultCollection;
 use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\ProcessBuilder;
+use Symfony\Component\Process\Process;
 
 class ZbarDecoder
 {
@@ -21,20 +21,19 @@ class ZbarDecoder
      */
     private $result;
     /**
-     * @var ProcessBuilder
+     * @var Process
      */
-    private $processBuilder;
+    private $process;
 
     /**
-     * @param array          $config
-     * @param ProcessBuilder $processBuilder
+     * @param array $config
+     * @param Process () $process
      */
-    public function __construct(array $config = [], $processBuilder = null)
+    public function __construct(array $config = [])
     {
         if (isset($config['path'])) {
             $this->setPath($config['path']);
         }
-        $this->processBuilder = null === $processBuilder ? new ProcessBuilder() : $processBuilder;
     }
 
     /**
@@ -108,8 +107,8 @@ class ZbarDecoder
     private function buildProcess()
     {
         $path = $this->getPath();
-        $this->processBuilder->setPrefix($path . DIRECTORY_SEPARATOR . static::EXECUTABLE);
-        $this->processBuilder->setArguments(['-D', '--xml', '-q', $this->getFilePath()])->enableOutput();
+        $this->process = new Process([$path . DIRECTORY_SEPARATOR . static::EXECUTABLE, '-D', '--xml', '-q', $this->getFilePath()]);
+        $this->process->enableOutput();
     }
 
     /**
@@ -119,7 +118,7 @@ class ZbarDecoder
      */
     private function runProcess()
     {
-        $process = $this->processBuilder->getProcess();
+        $process = $this->process;
         try {
             $process->mustRun();
             $parser = new ParserXML();
