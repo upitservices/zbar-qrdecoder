@@ -1,5 +1,5 @@
 {
-    "name": "nicard/zbar-qrdecoder",
+    "name": "upitservices/zbar-qrdecoder",
     "description": "A PHP wrapper for Zbar. Decodes images/photos containing QR codes.",
     "keywords": ["zbar","qr","qrcode","decode","php","laravel"],
     "license": "MIT",
@@ -7,11 +7,15 @@
         {
             "name": "Robbie Paul",
             "email": "robbiepaul@me.com"
+        },
+        {
+            "name": "Thiago Elias Rezende",
+            "email": "thiago@upitservices.com.br"
         }
     ],
     "require": {
         "php": ">=5.5.0",
-        "symfony/process": "^3.0"
+        "symfony/process": "^4.3.4"
     },
     "require-dev" : {
         "phpunit/phpunit": "^4.8",
